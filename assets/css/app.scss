@@ -3,6 +3,10 @@
 
 @tailwind components;
 
+html, body, .phx-connected {
+  @apply h-full;
+}
+
 @tailwind utilities;
 
 @import "../node_modules/nprogress/nprogress.css";
