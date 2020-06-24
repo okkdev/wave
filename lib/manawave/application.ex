@@ -4,6 +4,7 @@ defmodule Manawave.Application do
   @moduledoc false
 
   use Application
+  alias Manawave.Waves
 
   def start(_type, _args) do
     children = [
@@ -12,9 +13,10 @@ defmodule Manawave.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Manawave.PubSub},
       # Start the Endpoint (http/https)
-      ManawaveWeb.Endpoint
+      ManawaveWeb.Endpoint,
       # Start a worker by calling: Manawave.Worker.start_link(arg)
       # {Manawave.Worker, arg}
+      {Waves, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
