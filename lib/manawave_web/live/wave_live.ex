@@ -3,26 +3,26 @@ defmodule ManawaveWeb.WaveLive do
   alias Manawave.Waves
 
   @impl true
-  def mount(%{"id" => table}, _session, socket) do
-    {:ok, assign(socket, table: table)}
+  def mount(%{"floor" => floor, "number" => number}, _session, socket) do
+    {:ok, assign(socket, table: floor <> "_" <> number)}
   end
 
   @impl true
   def handle_event("wave", _, socket) do
-    %{number: socket.assigns.table}
+    %{table: socket.assigns.table}
     |> save_wave
-    |> broadcast(:wave)
+
+    broadcast(:wave)
 
     {:noreply, socket}
   end
 
-  defp broadcast(table, event) do
-    Phoenix.PubSub.broadcast(Manawave.PubSub, "ManaWave", {event, table})
+  defp broadcast(event) do
+    Phoenix.PubSub.broadcast(Manawave.PubSub, "ManaWave", {event})
   end
 
   defp save_wave(table) do
-    table_with_time = Map.put(table, :time, DateTime.now!("Europe/Zurich"))
-    Waves.create(table_with_time)
-    table_with_time
+    Map.put(table, :time, DateTime.now!("Europe/Zurich"))
+    |> Waves.create
   end
 end
