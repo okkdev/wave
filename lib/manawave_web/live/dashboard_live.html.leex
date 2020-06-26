@@ -2,12 +2,14 @@
   <div class="text-3xl font-medium">
     Bar Dashboard
   </div>
-  <div class="text-2xl ml-3">Time: <%=
+  <div class="text-3xl ml-3">
+  <%=
     [@currenttime.hour, @currenttime.minute, @currenttime.second]
     |> Enum.map(&to_string/1)
     |> Enum.map(&String.pad_leading(&1, 2, "0"))
     |> Enum.join(":")
-  %></div>
+  %>
+  </div>
 </div>
 
 <div class="flex flex-col w-1/2">
