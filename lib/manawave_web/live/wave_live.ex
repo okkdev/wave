@@ -1,10 +1,12 @@
 defmodule ManawaveWeb.WaveLive do
   use ManawaveWeb, :live_view
   alias Manawave.Waves
+  alias Manawave.Pubsub
 
   @impl true
   def mount(%{"floor" => floor, "number" => number}, _session, socket) do
-    {:ok, assign(socket, table: floor <> "_" <> number)}
+    if connected?(socket), do: Pubsub.subscribe()
+    {:ok, assign(socket, table: floor <> "_" <> number, disabled: false, waveani: false)}
   end
 
   @impl true
@@ -12,13 +14,29 @@ defmodule ManawaveWeb.WaveLive do
     %{table: socket.assigns.table}
     |> save_wave
 
-    broadcast(:wave)
+    Pubsub.broadcast(:wave)
+    :timer.send_after(300, self(), {:waveani})
 
-    {:noreply, socket}
+    {:noreply, assign(socket, disabled: true, waveani: true)}
   end
 
-  defp broadcast(event) do
-    Phoenix.PubSub.broadcast(Manawave.PubSub, "ManaWave", {event})
+  @impl true
+  def handle_info({:ready, table}, socket) do
+    if table === socket.assigns.table do
+      {:noreply, assign(socket, disabled: false)}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_info({:waveani}, socket) do
+    {:noreply, assign(socket, waveani: false)}
+  end
+
+  @impl true
+  def handle_info(_, socket) do
+    {:noreply, socket}
   end
 
   defp save_wave(table) do

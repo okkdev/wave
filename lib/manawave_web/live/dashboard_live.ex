@@ -1,12 +1,13 @@
 defmodule ManawaveWeb.DashboardLive do
   use ManawaveWeb, :live_view
   alias Manawave.Waves
+  alias Manawave.Pubsub
 
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
-      subscribe()
-      :timer.send_interval(1000, self(), :tick)
+      Pubsub.subscribe()
+      :timer.send_interval(1000, self(), {:tick})
     end
 
     {:ok, fetch(put_time(socket))}
@@ -18,19 +19,20 @@ defmodule ManawaveWeb.DashboardLive do
   end
 
   @impl true
-  def handle_info(:tick, socket) do
+  def handle_info({:tick}, socket) do
     {:noreply, put_time(socket)}
+  end
+
+  @impl true
+  def handle_info(_, socket) do
+    {:noreply, socket}
   end
 
   @impl true
   def handle_event("acknowledge", %{"value" => table}, socket) do
     Waves.acknowledge(table)
-
+    Pubsub.broadcast(:ready, table)
     {:noreply, fetch(socket)}
-  end
-
-  defp subscribe do
-    Phoenix.PubSub.subscribe(Manawave.PubSub, "ManaWave")
   end
 
   defp put_time(socket) do
