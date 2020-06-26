@@ -10,9 +10,9 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :manawave, ManawaveWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  url: [host: "wave.manabar.ch", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  check_origin: ["manawave.gigalixirapp.com", "*.manabar.ch"]
+  check_origin: ["//manawave.gigalixirapp.com", "//wave.manabar.ch"]
 
 # Do not print debug messages in production
 config :logger, level: :info
