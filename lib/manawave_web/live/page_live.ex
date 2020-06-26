@@ -8,6 +8,9 @@ defmodule ManawaveWeb.PageLive do
 
   @impl true
   def handle_event("submit", %{"table" => ""}, socket) do
+    socket =
+      socket
+      |> put_flash(:error, "Bitte Tischnummer angeben!")
     {:noreply, socket}
   end
 
