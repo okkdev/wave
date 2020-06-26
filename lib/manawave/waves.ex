@@ -19,7 +19,7 @@ defmodule Manawave.Waves do
   def list_all() do
     Ets.match_object(:waves, {:"$1", :"$2"})
     |> Enum.map(fn {n, t} -> %{number: n, time: t} end)
-    |> Enum.sort_by(& &1.time, {:desc, DateTime})
+    |> Enum.sort_by(& &1.time, {:asc, DateTime})
   end
 
   def list_all_acknowledged() do
