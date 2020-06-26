@@ -12,15 +12,14 @@ defmodule Manawave.Waves do
     {:ok, :ready}
   end
 
-  def create(%{number: num, time: time}) do
-    num = String.to_integer(num)
-    Ets.insert(:waves, {num, time})
+  def create(%{table: table, time: time}) do
+    Ets.insert(:waves, {table, time})
   end
 
   def list_all() do
     Ets.match_object(:waves, {:"$1", :"$2"})
     |> Enum.map(fn {n, t} -> %{number: n, time: t} end)
-    |> Enum.sort_by(& &1.time, DateTime)
+    |> Enum.sort_by(& &1.time, {:desc, DateTime})
   end
 
   def list_all_acknowledged() do
@@ -29,9 +28,8 @@ defmodule Manawave.Waves do
     |> Enum.sort_by(& &1.time, {:desc, DateTime})
   end
 
-  def acknowledge(num) do
-    num = String.to_integer(num)
-    [{num, time}] = Ets.lookup(:waves, num)
-    Ets.insert(:waves, {num, time, :acknowledged})
+  def acknowledge(number) do
+    [{number, time}] = Ets.lookup(:waves, number)
+    Ets.insert(:waves, {number, time, :acknowledged})
   end
 end

@@ -19,7 +19,7 @@ defmodule ManawaveWeb.Router do
 
     live "/", PageLive, :index
 
-    live "/table/:id", WaveLive
+    live "/table/:floor/:number", WaveLive
     live "/bar", DashboardLive
   end
 
