@@ -20,7 +20,7 @@ defmodule ManawaveWeb.WaveLive do
     socket =
       socket
       |> assign(disabled: true, waveani: true)
-      |> put_flash(:info, "Waiter called")
+      |> put_flash(:info, "🙋‍♀️ ManaCrew wurde gerufen! 🙋‍♂️")
 
     {:noreply, socket}
   end
@@ -31,7 +31,7 @@ defmodule ManawaveWeb.WaveLive do
       socket =
         socket
         |> assign(disabled: false)
-        |> put_flash(:info, "Waiter on the way! 🏃‍♂️")
+        |> put_flash(:info, "Jemand ist auf dem Weg! 🏃‍♂️")
 
       {:noreply, socket}
     else
