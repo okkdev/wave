@@ -17,7 +17,12 @@ defmodule ManawaveWeb.WaveLive do
     Pubsub.broadcast(:wave)
     :timer.send_after(300, self(), {:waveani})
 
-    {:noreply, assign(socket, disabled: true, waveani: true)}
+    socket =
+      socket
+      |> assign(disabled: true, waveani: true)
+      |> put_flash(:info, "Waiter called")
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -41,6 +46,6 @@ defmodule ManawaveWeb.WaveLive do
 
   defp save_wave(table) do
     Map.put(table, :time, DateTime.now!("Europe/Zurich"))
-    |> Waves.create
+    |> Waves.create()
   end
 end
