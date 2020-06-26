@@ -28,7 +28,12 @@ defmodule ManawaveWeb.WaveLive do
   @impl true
   def handle_info({:ready, table}, socket) do
     if table === socket.assigns.table do
-      {:noreply, assign(socket, disabled: false)}
+      socket =
+        socket
+        |> assign(disabled: false)
+        |> put_flash(:info, "Waiter on the way! 🏃‍♂️")
+
+      {:noreply, socket}
     else
       {:noreply, socket}
     end
