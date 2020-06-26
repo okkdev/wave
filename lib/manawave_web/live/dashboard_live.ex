@@ -4,14 +4,22 @@ defmodule ManawaveWeb.DashboardLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: subscribe()
+    if connected?(socket) do
+      subscribe()
+      :timer.send_interval(1000, self(), :tick)
+    end
 
-    {:ok, fetch(socket)}
+    {:ok, fetch(put_time(socket))}
   end
 
   @impl true
-  def handle_info({:wave, _table}, socket) do
+  def handle_info({:wave}, socket) do
     {:noreply, fetch(socket)}
+  end
+
+  @impl true
+  def handle_info(:tick, socket) do
+    {:noreply, put_time(socket)}
   end
 
   @impl true
@@ -21,8 +29,12 @@ defmodule ManawaveWeb.DashboardLive do
     {:noreply, fetch(socket)}
   end
 
-  def subscribe do
+  defp subscribe do
     Phoenix.PubSub.subscribe(Manawave.PubSub, "ManaWave")
+  end
+
+  defp put_time(socket) do
+    assign(socket, currenttime: DateTime.now!("Europe/Zurich"))
   end
 
   defp fetch(socket) do
