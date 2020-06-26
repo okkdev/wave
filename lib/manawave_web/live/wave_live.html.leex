@@ -9,7 +9,7 @@
     |> String.replace("_", " ")
     %>
   </span>
-  <button class="text-6xl py-10 px-12 my-4 rounded-lg transition delay-100 duration-200 <%= if @disabled, do: "bg-green-400", else: "bg-blue-900" %>" phx-click="wave" <%= if @disabled, do: "disabled" %>>
+  <button class="text-6xl py-10 px-12 my-4 rounded-lg transition delay-100 duration-200 <%= if @disabled, do: "bg-green-400", else: "delay-1000 bg-blue-900" %>" phx-click="wave" <%= if @disabled, do: "disabled" %>>
     <div class="transition ease-in-out duration-100 origin-center transform <%= if @waveani, do: "rotate-45" %>">👋</div>
   </button>
   <span class="text-xl font-xl">Wave um ManaBar Crew zu rufen</span>
