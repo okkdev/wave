@@ -7,7 +7,7 @@ defmodule ManawaveWeb.DashboardLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       Pubsub.subscribe()
-      :timer.send_interval(1000, self(), {:tick})
+      :timer.send_interval(1000, self(), :tick)
     end
 
     {:ok, fetch(put_time(socket))}
@@ -19,7 +19,7 @@ defmodule ManawaveWeb.DashboardLive do
   end
 
   @impl true
-  def handle_info({:tick}, socket) do
+  def handle_info(:tick, socket) do
     {:noreply, put_time(socket)}
   end
 
