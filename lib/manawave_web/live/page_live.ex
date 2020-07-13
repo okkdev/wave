@@ -27,4 +27,8 @@ defmodule ManawaveWeb.PageLive do
   defp set_table_number(socket, "UG") do
     assign(socket, table_num: Enum.to_list(1..2))
   end
+
+  defp set_table_number(socket, "OD") do
+    assign(socket, table_num: Enum.to_list(1..2))
+  end
 end
