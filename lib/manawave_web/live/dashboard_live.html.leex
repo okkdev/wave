@@ -16,7 +16,7 @@
 <div class="flex flex-col w-2/5">
   <div class="font-bold text-3xl text-center mb-3">Feed</div>
   <%= for table <- @tables do %>
-    <button id="table_<%= table.number %>" value="<%= table.number %>" phx-click="acknowledge" class="flex flex-row cursor-pointer justify-around m-2 p-4 rounded-full bg-manabar-blue text-white text-lg text-center">
+    <button id="table_<%= table.number %>" value="<%= table.number %>" phx-click="acknowledge" phx-hook="Ding" class="flex flex-row cursor-pointer justify-around m-2 p-4 rounded-full bg-manabar-blue text-white text-lg text-center">
       <div class="flex flex-col justify-center items-center text-2xl">
         <div>
           <%= DateTime.diff(table.time, @currenttime) %>s
