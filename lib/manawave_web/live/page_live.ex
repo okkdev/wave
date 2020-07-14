@@ -13,7 +13,8 @@ defmodule ManawaveWeb.PageLive do
 
   @impl true
   def handle_event("submit", %{"floor" => floor, "table" => table}, socket) do
-    {:noreply, push_redirect(socket, to: Routes.live_path(socket, ManawaveWeb.WaveLive, floor, table))}
+    {:noreply,
+     push_redirect(socket, to: Routes.live_path(socket, ManawaveWeb.WaveLive, floor, table))}
   end
 
   defp set_table_number(socket, "EG") do
@@ -28,7 +29,7 @@ defmodule ManawaveWeb.PageLive do
     assign(socket, table_num: Enum.to_list(1..2))
   end
 
-  defp set_table_number(socket, "OD") do
+  defp set_table_number(socket, "AT") do
     assign(socket, table_num: Enum.to_list(1..2))
   end
 end
