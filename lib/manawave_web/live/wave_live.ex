@@ -3,15 +3,17 @@ defmodule ManawaveWeb.WaveLive do
   alias Manawave.Waves
   alias Manawave.Pubsub
 
-  defguardp valid_table_number?(limit, number) when number >= 1 or number <= limit
+  defguardp valid_table_number?(limit, number) when number >= 1 and number <= limit
 
   @impl true
   def mount(%{"floor" => floor, "number" => number}, _session, socket) do
     if connected?(socket), do: Pubsub.subscribe()
-    if validate_table?(socket, floor, number) do
-      {:ok, assign(socket, table: floor <> "_" <> number, disabled: false, waveani: false)}
+    number = String.to_integer(number)
+
+    if validate_table?(socket, floor, number) |> IO.inspect() do
+      {:ok, assign(socket, table: floor <> "_" <> "#{number}", disabled: false, waveani: false)}
     else
-      {:noreply, push_redirect(socket, to: Routes.live_path(socket, ManawaveWeb.PageLive))}
+      {:noreply, push_redirect(socket, to: Routes.page_path(socket, :index))}
     end
   end
 
