@@ -3,33 +3,57 @@ defmodule ManawaveWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, set_table_number(socket, "EG")}
+    socket =
+      socket
+      |> assign(:floors, ["-", "EG", "OG", "UG", "AT"])
+      |> assign_tables("-")
+
+    {:ok, socket}
   end
 
   @impl true
-  def handle_event("floor", %{"floor" => floor}, socket) do
-    {:noreply, set_table_number(socket, floor)}
+  def handle_event("floor", %{"picker" => %{"floor" => floor}}, socket) do
+    {:noreply, assign_tables(socket, floor)}
   end
 
   @impl true
-  def handle_event("submit", %{"floor" => floor, "table" => table}, socket) do
+  def handle_event("submit", %{"picker" => %{"floor" => floor, "table" => table}}, socket) do
     {:noreply,
      push_redirect(socket, to: Routes.live_path(socket, ManawaveWeb.WaveLive, floor, table))}
   end
 
-  defp set_table_number(socket, "EG") do
-    assign(socket, table_num: Enum.to_list(1..6))
+  defp assign_tables(socket, floor) do
+    socket
+    |> toggle_disable(floor)
+    |> set_table_amount(floor)
+    |> assign(:current_floor, floor)
   end
 
-  defp set_table_number(socket, "OG") do
-    assign(socket, table_num: Enum.to_list(1..7))
+  defp set_table_amount(socket, "-") do
+    assign(socket, tables: ["-"])
   end
 
-  defp set_table_number(socket, "UG") do
-    assign(socket, table_num: Enum.to_list(1..2))
+  defp set_table_amount(socket, "EG") do
+    assign(socket, tables: Enum.to_list(1..6))
   end
 
-  defp set_table_number(socket, "AT") do
-    assign(socket, table_num: Enum.to_list(1..2))
+  defp set_table_amount(socket, "OG") do
+    assign(socket, tables: Enum.to_list(1..7))
+  end
+
+  defp set_table_amount(socket, "UG") do
+    assign(socket, tables: Enum.to_list(1..2))
+  end
+
+  defp set_table_amount(socket, "AT") do
+    assign(socket, tables: Enum.to_list(1..2))
+  end
+
+  defp toggle_disable(socket, "-") do
+    assign(socket, :disabled, true)
+  end
+
+  defp toggle_disable(socket, _) do
+    assign(socket, :disabled, false)
   end
 end
