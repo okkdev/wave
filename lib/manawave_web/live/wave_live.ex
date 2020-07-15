@@ -10,10 +10,10 @@ defmodule ManawaveWeb.WaveLive do
     if connected?(socket), do: Pubsub.subscribe()
     number = String.to_integer(number)
 
-    if validate_table?(socket, floor, number) |> IO.inspect() do
+    if validate_table?(socket, floor, number) do
       {:ok, assign(socket, table: floor <> "_" <> "#{number}", disabled: false, waveani: false)}
     else
-      {:noreply, push_redirect(socket, to: Routes.page_path(socket, :index))}
+      {:ok, push_redirect(socket, to: Routes.page_path(socket, :index))}
     end
   end
 
@@ -69,7 +69,7 @@ defmodule ManawaveWeb.WaveLive do
     true
   end
 
-  defp validate_table?(socket, _, _) do
+  defp validate_table?(_socket, _, _) do
     false
   end
 
