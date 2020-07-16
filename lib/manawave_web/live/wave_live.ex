@@ -69,6 +69,10 @@ defmodule ManawaveWeb.WaveLive do
     true
   end
 
+  defp validate_table?(_socket, "AT", number) when valid_table_number?(2, number) do
+    true
+  end
+
   defp validate_table?(_socket, _, _) do
     false
   end
