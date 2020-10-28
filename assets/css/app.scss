@@ -1,6 +1,17 @@
 @tailwind base;
 
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap');
+
 @tailwind components;
+
+html {
+  font-family: 'Alegreya Sans', sans-serif;
+  @apply font-medium bg-manabar-dark text-white;
+}
+
+html, body, .phx-connected {
+  @apply h-full;
+}
 
 @tailwind utilities;
 

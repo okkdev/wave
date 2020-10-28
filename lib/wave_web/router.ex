@@ -18,6 +18,9 @@ defmodule WaveWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    live "/table/:floor/:number", WaveLive
+    live "/bar", DashboardLive
   end
 
   # Other scopes may use custom stacks.
