@@ -20,7 +20,7 @@ defmodule Wave.MixProject do
   def application do
     [
       mod: {Wave.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
