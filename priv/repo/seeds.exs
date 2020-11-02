@@ -12,7 +12,11 @@
 
 alias Wave.Waves
 
-Waves.create_floor(%{name:"OG"})
-Waves.create_floor(%{name:"EG"})
-Waves.create_floor(%{name:"UG"})
-Waves.create_floor(%{name:"AT"})
+# ManaBar Tables
+tables = [EG: 6, OG: 7, UG: 2, AT: 2]
+
+Enum.each(tables, fn {floor, tables} ->
+  {:ok, floor} = Waves.create_floor(%{name: Atom.to_string(floor)})
+
+  Waves.create_tables(floor.id, tables)
+end)

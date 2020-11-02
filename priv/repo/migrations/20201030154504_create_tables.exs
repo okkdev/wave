@@ -5,7 +5,7 @@ defmodule Wave.Repo.Migrations.CreateTables do
     create table(:tables) do
       add :number, :integer
       add :active, :boolean, default: false, null: false
-      add :floor_id, references(:floors, on_delete: :nothing)
+      add :floor_id, references(:floors, on_delete: :delete_all)
 
       timestamps()
     end

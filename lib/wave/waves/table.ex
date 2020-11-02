@@ -13,7 +13,7 @@ defmodule Wave.Waves.Table do
   @doc false
   def changeset(table, attrs) do
     table
-    |> cast(attrs, [:number, :active])
-    |> validate_required([:number, :active])
+    |> cast(attrs, [:number, :active, :floor_id])
+    |> validate_required([:number, :active, :floor_id])
   end
 end
