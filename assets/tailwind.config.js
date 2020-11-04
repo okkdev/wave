@@ -3,9 +3,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "manabar-dark": "#343434",
-        "manabar-blue": "#273582",
-        "manabar-gray": "#595959",
+        "wave-dark": "#343434",
+        "wave-blue": "#273582",
+        "wave-gray": "#595959",
       },
     },
   },
