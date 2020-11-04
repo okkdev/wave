@@ -5,8 +5,7 @@ defmodule Wave.Waves do
 
   import Ecto.Query, warn: false
   alias Wave.Repo
-
-  alias Wave.Waves.Floor
+  alias Wave.Waves.{Floor, Table}
 
   @doc """
   Returns the list of floors.
@@ -18,7 +17,9 @@ defmodule Wave.Waves do
 
   """
   def list_floors do
-    Repo.all(Floor)
+    Floor
+    |> Repo.all()
+    |> Repo.preload(:tables)
   end
 
   @doc """
@@ -35,7 +36,11 @@ defmodule Wave.Waves do
       ** (Ecto.NoResultsError)
 
   """
-  def get_floor!(id), do: Repo.get!(Floor, id)
+  def get_floor!(id) do
+    Floor
+    |> Repo.get!(id)
+    |> Repo.preload(:tables)
+  end
 
   @doc """
   Creates a floor.
@@ -52,6 +57,7 @@ defmodule Wave.Waves do
   def create_floor(attrs \\ %{}) do
     %Floor{}
     |> Floor.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:tables, with: &Table.changeset/2)
     |> Repo.insert()
   end
 
@@ -70,6 +76,7 @@ defmodule Wave.Waves do
   def update_floor(%Floor{} = floor, attrs) do
     floor
     |> Floor.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:tables, with: &Table.changeset/2)
     |> Repo.update()
   end
 
@@ -114,7 +121,9 @@ defmodule Wave.Waves do
 
   """
   def list_tables do
-    Repo.all(Table)
+    Table
+    |> Repo.all()
+    |> Repo.preload(:floor)
   end
 
   @doc """
@@ -131,7 +140,11 @@ defmodule Wave.Waves do
       ** (Ecto.NoResultsError)
 
   """
-  def get_table!(id), do: Repo.get!(Table, id)
+  def get_table!(id) do
+    Table
+    |> Repo.get!(id)
+    |> Repo.preload(:floor)
+  end
 
   @doc """
   Creates a table.
@@ -145,21 +158,11 @@ defmodule Wave.Waves do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_table(attrs \\ %{}) do
+  def create_table(%Floor{} = floor, attrs \\ %{}) do
     %Table{}
     |> Table.changeset(attrs)
+    |> Ecto.Changeset.put_change(:floor_id, floor.id)
     |> Repo.insert()
-  end
-
-  @doc """
-  Creates multiple tables.
-  """
-  def create_tables(floor_id, tables) do
-    Enum.each(1..tables, fn table_number ->
-      %Table{}
-      |> Table.changeset(%{number: table_number, floor_id: floor_id})
-      |> Repo.insert()
-    end)
   end
 
   @doc """

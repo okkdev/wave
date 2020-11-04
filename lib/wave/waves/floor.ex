@@ -14,7 +14,6 @@ defmodule Wave.Waves.Floor do
   def changeset(floor, attrs) do
     floor
     |> cast(attrs, [:name])
-    |> cast_assoc(:tables)
     |> validate_required([:name])
     |> unique_constraint(:name)
   end

@@ -1,11 +1,12 @@
 defmodule Wave.Waves.Table do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Wave.Waves.Floor
 
   schema "tables" do
     field :active, :boolean, default: false
     field :number, :integer
-    field :floor_id, :id
+    belongs_to :floor, Floor
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule Wave.Waves.Table do
   @doc false
   def changeset(table, attrs) do
     table
-    |> cast(attrs, [:number, :active, :floor_id])
-    |> validate_required([:number, :active, :floor_id])
+    |> cast(attrs, [:number, :active])
+    |> validate_required([:number, :active])
   end
 end

@@ -10,13 +10,50 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias Wave.Waves
+alias Wave.Repo
+alias Wave.Waves.{Table, Floor}
 
 # ManaBar Tables
-tables = [EG: 6, OG: 7, UG: 2, AT: 2]
+floor_tables = [
+  %Floor{
+    name: "EG",
+    tables: [
+      %Table{number: 1},
+      %Table{number: 2},
+      %Table{number: 3},
+      %Table{number: 4},
+      %Table{number: 5},
+      %Table{number: 6}
+    ]
+  },
+  %Floor{
+    name: "OG",
+    tables: [
+      %Table{number: 1},
+      %Table{number: 2},
+      %Table{number: 3},
+      %Table{number: 4},
+      %Table{number: 5},
+      %Table{number: 6},
+      %Table{number: 7}
+    ]
+  },
+  %Floor{
+    name: "UG",
+    tables: [
+      %Table{number: 1},
+      %Table{number: 2}
+    ]
+  },
+  %Floor{
+    name: "AT",
+    tables: [
+      %Table{number: 1},
+      %Table{number: 2}
+    ]
+  }
+]
 
-Enum.each(tables, fn {floor, tables} ->
-  {:ok, floor} = Waves.create_floor(%{name: Atom.to_string(floor)})
-
-  Waves.create_tables(floor.id, tables)
+Enum.each(floor_tables, fn floor ->
+  Repo.insert(floor)
 end)
