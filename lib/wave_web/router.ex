@@ -20,7 +20,8 @@ defmodule WaveWeb.Router do
     live "/", PageLive, :index
 
     live "/table/:floor/:number", WaveLive
-    live "/bar", DashboardLive
+    live "/tracing", ContactLive
+    live "/dash", DashboardLive
   end
 
   # Other scopes may use custom stacks.
