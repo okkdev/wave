@@ -36,6 +36,7 @@ defmodule WaveWeb.Router do
     pipe_through [:browser, :protected]
 
     live "/", DashboardLive
+    live "/settings", DashboardSettingsLive
     live_dashboard "/app", metrics: WaveWeb.Telemetry, ecto_repos: [Wave.Repo]
   end
 

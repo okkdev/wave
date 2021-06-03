@@ -111,6 +111,13 @@ defmodule Wave.Waves do
 
   alias Wave.Waves.Table
 
+  def acknowledge_table(table) do
+    table
+    |> get_table!()
+    |> change_table(%{active: false})
+    |> Repo.update()
+  end
+
   @doc """
   Returns the list of tables.
 
@@ -129,6 +136,20 @@ defmodule Wave.Waves do
   def list_floor_tables(floor_id) do
     Table
     |> where(floor_id: ^floor_id)
+    |> Repo.all()
+    |> Repo.preload(:floor)
+  end
+
+  def list_active_tables do
+    Table
+    |> where(active: true)
+    |> Repo.all()
+    |> Repo.preload(:floor)
+  end
+
+  def list_inactive_tables do
+    Table
+    |> where(active: false)
     |> Repo.all()
     |> Repo.preload(:floor)
   end
