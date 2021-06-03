@@ -109,12 +109,17 @@ defmodule Wave.Waves do
     Floor.changeset(floor, attrs)
   end
 
-  alias Wave.Waves.Table
-
   def acknowledge_table(table) do
     table
     |> get_table!()
     |> change_table(%{active: false})
+    |> Repo.update()
+  end
+
+  def activate_table(table) do
+    table
+    |> get_table!()
+    |> change_table(%{active: true})
     |> Repo.update()
   end
 
@@ -171,6 +176,12 @@ defmodule Wave.Waves do
   def get_table!(id) do
     Table
     |> Repo.get!(id)
+    |> Repo.preload(:floor)
+  end
+
+  def get_table(id) do
+    Table
+    |> Repo.get(id)
     |> Repo.preload(:floor)
   end
 
