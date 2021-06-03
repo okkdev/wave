@@ -44,13 +44,12 @@ defmodule WaveWeb.PageLive do
   end
 
   @impl true
-  def handle_event("update", _, socket) do
-    {:noreply, socket}
+  def handle_event("submit", %{"picker" => %{"table" => table}}, socket) do
+    {:noreply, push_redirect(socket, to: Routes.live_path(socket, WaveWeb.WaveLive, table))}
   end
 
   @impl true
-  def handle_event("submit", %{"picker" => %{"floor" => floor, "table" => table}}, socket) do
-    {:noreply,
-     push_redirect(socket, to: Routes.live_path(socket, WaveWeb.WaveLive, floor, table))}
+  def handle_event(_, _, socket) do
+    {:noreply, socket}
   end
 end

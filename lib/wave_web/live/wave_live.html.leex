@@ -5,8 +5,7 @@
 
   <div class="text-2xl font-xl">
   Tisch <%=
-    @table
-    |> String.replace("_", " ")
+    "#{@table.floor.name} #{@table.number}"
     %>
   </div>
   <button class="my-4 flex-shrink-0 text-6xl pt-10 pb-8 px-12 rounded-lg transition delay-100 duration-200 <%= if @disabled, do: "bg-green-500 cursor-default", else: "delay-1000 bg-wave-blue" %>" phx-click="wave" <%= if @disabled, do: "disabled" %>>

@@ -44,6 +44,6 @@ defmodule WaveWeb.Router do
     pipe_through [:browser, :traced]
 
     live "/", PageLive, :index
-    live "/table/:floor/:number", WaveLive
+    live "/table/:table_id", WaveLive
   end
 end

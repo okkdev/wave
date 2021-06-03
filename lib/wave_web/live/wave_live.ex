@@ -3,24 +3,28 @@ defmodule WaveWeb.WaveLive do
   alias Wave.Waves
   alias Wave.Pubsub
 
-  defguardp valid_table_number?(limit, number) when number >= 1 and number <= limit
-
   @impl true
-  def mount(%{"floor" => floor, "number" => number}, _session, socket) do
+  def mount(%{"table_id" => table}, _session, socket) do
     if connected?(socket), do: Pubsub.subscribe()
-    number = String.to_integer(number)
 
-    if validate_table?(socket, floor, number) do
-      {:ok, assign(socket, table: floor <> "_" <> "#{number}", disabled: false, waveani: false)}
-    else
-      {:ok, push_redirect(socket, to: Routes.page_path(socket, :index))}
+    case Waves.get_table(table) do
+      nil ->
+        {:ok, push_redirect(socket, to: Routes.page_path(socket, :index))}
+
+      table ->
+        socket =
+          socket
+          |> assign(:table, table)
+          |> assign(:disabled, table.active)
+          |> assign(:waveani, false)
+
+        {:ok, socket}
     end
   end
 
   @impl true
   def handle_event("wave", _, socket) do
-    %{table: socket.assigns.table}
-    |> save_wave
+    Waves.activate_table(socket.assigns.table.id)
 
     Pubsub.broadcast(:wave)
     :timer.send_after(300, self(), {:waveani})
@@ -35,7 +39,7 @@ defmodule WaveWeb.WaveLive do
 
   @impl true
   def handle_info({:ready, table}, socket) do
-    if table === socket.assigns.table do
+    if table === socket.assigns.table.id do
       socket =
         socket
         |> assign(disabled: false)
@@ -55,30 +59,5 @@ defmodule WaveWeb.WaveLive do
   @impl true
   def handle_info(_, socket) do
     {:noreply, socket}
-  end
-
-  defp validate_table?(_socket, "EG", number) when valid_table_number?(6, number) do
-    true
-  end
-
-  defp validate_table?(_socket, "OG", number) when valid_table_number?(7, number) do
-    true
-  end
-
-  defp validate_table?(_socket, "UG", number) when valid_table_number?(2, number) do
-    true
-  end
-
-  defp validate_table?(_socket, "AT", number) when valid_table_number?(2, number) do
-    true
-  end
-
-  defp validate_table?(_socket, _, _) do
-    false
-  end
-
-  defp save_wave(table) do
-    Map.put(table, :time, DateTime.now!("Europe/Zurich"))
-    |> Waves.create()
   end
 end
