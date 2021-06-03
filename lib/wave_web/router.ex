@@ -1,5 +1,7 @@
 defmodule WaveWeb.Router do
   use WaveWeb, :router
+  import Plug.BasicAuth
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -14,34 +16,33 @@ defmodule WaveWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :protected do
+    plug :basic_auth,
+      username: "admin",
+      password: Application.get_env(:wave, :dashboard_password)
+  end
+
+  pipeline :traced do
+    plug Wave.Plugs.Trace
+  end
+
   scope "/", WaveWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
-
-    live "/table/:floor/:number", WaveLive
     live "/tracing", ContactLive
-    live "/dash", DashboardLive
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", WaveWeb do
-  #   pipe_through :api
-  # end
+  scope "/dashboard", WaveWeb do
+    pipe_through [:browser, :protected]
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+    live "/", DashboardLive
+    live_dashboard "/app", metrics: WaveWeb.Telemetry, ecto_repos: [Wave.Repo]
+  end
 
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: WaveWeb.Telemetry
-    end
+  scope "/", WaveWeb do
+    pipe_through [:browser, :traced]
+
+    live "/", PageLive, :index
+    live "/table/:floor/:number", WaveLive
   end
 end
