@@ -126,6 +126,13 @@ defmodule Wave.Waves do
     |> Repo.preload(:floor)
   end
 
+  def list_floor_tables(floor_id) do
+    Table
+    |> where(floor_id: ^floor_id)
+    |> Repo.all()
+    |> Repo.preload(:floor)
+  end
+
   @doc """
   Gets a single table.
 

@@ -28,7 +28,7 @@ defmodule WaveWeb.WaveLive do
     socket =
       socket
       |> assign(disabled: true, waveani: true)
-      |> put_flash(:info, "🙋‍♀️ ManaCrew wurde gerufen! 🙋‍♂️")
+      |> put_flash(:info, "🙋‍♀️ Crew wurde gerufen! 🙋‍♂️")
 
     {:noreply, socket}
   end
