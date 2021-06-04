@@ -11,7 +11,6 @@ defmodule WaveWeb.Plugs.Trace do
 
       _ ->
         conn
-        |> IO.inspect()
         |> put_session(:traced, false)
         |> redirect(to: "/tracing")
         |> halt()
