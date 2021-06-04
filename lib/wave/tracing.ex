@@ -18,7 +18,9 @@ defmodule Wave.Tracing do
 
   """
   def list_contacts do
-    Repo.all(Contact)
+    Contact
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
   end
 
   @doc """
