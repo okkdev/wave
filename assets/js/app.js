@@ -3,7 +3,7 @@
 // its own CSS file.
 import "../css/app.scss"
 
-const ding = new Audio("/sounds/ding.mp3")
+const ding = new Audio("/sounds/AuctionWindowClose.ogg")
 
 let Hooks = {}
 Hooks.Ding = {
