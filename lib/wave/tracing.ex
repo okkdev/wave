@@ -91,6 +91,11 @@ defmodule Wave.Tracing do
     Repo.delete(contact)
   end
 
+  def delete_contact(id) do
+    get_contact!(id)
+    |> Repo.delete()
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking contact changes.
 

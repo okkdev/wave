@@ -23,6 +23,12 @@ defmodule WaveWeb.DashboardTracingLive do
     {:noreply, socket}
   end
 
+  @impl true
+  def handle_event("delete", %{"value" => id}, socket) do
+    Tracing.delete_contact(id)
+    {:noreply, fetch(socket)}
+  end
+
   defp fetch(socket) do
     assign(socket,
       contacts: Tracing.list_contacts()
