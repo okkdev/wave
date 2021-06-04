@@ -6,6 +6,7 @@ defmodule WaveWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
+    max_age: 18000,
     key: "_wave_key",
     signing_salt: "vKUkPshV"
   ]

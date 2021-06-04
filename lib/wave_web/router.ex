@@ -23,13 +23,14 @@ defmodule WaveWeb.Router do
   end
 
   pipeline :traced do
-    plug Wave.Plugs.Trace
+    plug WaveWeb.Plugs.Trace
   end
 
   scope "/", WaveWeb do
     pipe_through :browser
 
-    live "/tracing", ContactLive
+    get "/tracing", ContactController, :index
+    post "/tracing", ContactController, :create
   end
 
   scope "/dashboard", WaveWeb do
@@ -37,6 +38,7 @@ defmodule WaveWeb.Router do
 
     live "/", DashboardLive
     live "/settings", DashboardSettingsLive
+    live "/tracing", DashboardTracingLive
     live_dashboard "/app", metrics: WaveWeb.Telemetry, ecto_repos: [Wave.Repo]
   end
 

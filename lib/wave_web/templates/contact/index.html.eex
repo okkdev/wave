@@ -1,0 +1,41 @@
+<div class="flex flex-col px-4 text-xl text-center" >
+<div class="mb-10 text-3xl font-bold">Contact Tracing</div>
+
+<%= form_for @changeset, Routes.contact_path(@conn, :create),
+  fn f -> %>
+
+  <div class="flex justify-between">
+  <%= label f, :firstname %>
+  <%= text_input f, :firstname, class: "text-black rounded-lg px-1" %>
+  </div>
+  <div class="mb-3">
+  <%= error_tag f, :firstname %>
+  </div>
+
+  <div class="flex justify-between">
+  <%= label f, :lastname %>
+  <%= text_input f, :lastname, class: "text-black rounded-lg px-1" %>
+  </div>
+  <div class="mb-3">
+  <%= error_tag f, :lastname %>
+  </div>
+
+  <div class="flex justify-between">
+  <%= label f, :city %>
+  <%= text_input f, :city, class: "text-black rounded-lg px-1" %>
+  </div>
+  <div class="mb-3">
+  <%= error_tag f, :city %>
+  </div>
+
+  <div class="flex justify-between">
+  <%= label f, :phone %>
+  <%= text_input f, :phone, class: "text-black rounded-lg px-1" %>
+  </div>
+  <div class="mb-3">
+  <%= error_tag f, :phone %>
+  </div>
+
+  <%= submit "Submit", phx_disable_with: "Submitting...", class: "disabled:bg-wave-gray py-3 bg-wave-blue text-white rounded-full mt-5 w-full" %>
+<% end %>
+</div>
