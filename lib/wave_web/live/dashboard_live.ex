@@ -30,14 +30,14 @@ defmodule WaveWeb.DashboardLive do
 
   @impl true
   def handle_event("acknowledge", %{"id" => table}, socket) do
-    {table, _} = Integer.parse(table)
+    table = String.to_integer(table)
     Waves.acknowledge_table(table)
     Pubsub.broadcast(:ready, table)
     {:noreply, fetch(socket)}
   end
 
   defp put_time(socket) do
-    assign(socket, currenttime: DateTime.now!("Europe/Zurich"))
+    assign(socket, current_time: NaiveDateTime.utc_now())
   end
 
   defp fetch(socket) do
@@ -47,9 +47,12 @@ defmodule WaveWeb.DashboardLive do
     )
   end
 
-  defp display_wating_time(updated_at, current) do
-    updated_at
-    |> DateTime.from_naive!("Europe/Zurich")
-    |> DateTime.diff(current)
+  # Improve this shit
+  defp naive_to_zurich_time(naive_time) do
+    naive_time
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.shift_zone!("Europe/Zurich")
+    |> DateTime.truncate(:second)
+    |> DateTime.to_time()
   end
 end
