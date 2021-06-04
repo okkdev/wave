@@ -4,7 +4,7 @@ defmodule Wave.Pubsub do
   end
 
   def broadcast(event) do
-    Phoenix.PubSub.broadcast(Wave.PubSub, "Wave", {event})
+    Phoenix.PubSub.broadcast(Wave.PubSub, "Wave", event)
   end
 
   def broadcast(event, data) do

@@ -14,7 +14,7 @@ defmodule WaveWeb.DashboardLive do
   end
 
   @impl true
-  def handle_info({:wave}, socket) do
+  def handle_info(:wave, socket) do
     {:noreply, fetch(socket)}
   end
 
