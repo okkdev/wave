@@ -4,7 +4,7 @@
 <%= form_for @changeset, Routes.contact_path(@conn, :create),
   fn f -> %>
 
-  <div class="md:flex md:justify-between">
+  <div>
   <%= label f, :firstname, class: "block text-left" %>
   <%= text_input f, :firstname, class: "block text-black rounded-lg w-full px-1" %>
   </div>
@@ -12,7 +12,7 @@
   <%= error_tag f, :firstname %>
   </div>
 
-  <div class="md:flex md:justify-between">
+  <div>
   <%= label f, :lastname, class: "block text-left" %>
   <%= text_input f, :lastname, class: "block text-black rounded-lg w-full px-1" %>
   </div>
@@ -20,7 +20,7 @@
   <%= error_tag f, :lastname %>
   </div>
 
-  <div class="md:flex md:justify-between">
+  <div>
   <%= label f, :city, class: "block text-left" %>
   <%= text_input f, :city, class: "block text-black rounded-lg w-full px-1" %>
   </div>
@@ -28,7 +28,7 @@
   <%= error_tag f, :city %>
   </div>
 
-  <div class="md:flex md:justify-between">
+  <div>
   <%= label f, :phone, class: "block text-left" %>
   <%= text_input f, :phone, class: "block text-black rounded-lg w-full px-1" %>
   </div>
