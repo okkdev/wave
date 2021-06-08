@@ -96,6 +96,11 @@ defmodule Wave.Waves do
     Repo.delete(floor)
   end
 
+  def delete_floor(id) do
+    get_floor!(id)
+    |> Repo.delete()
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking floor changes.
 

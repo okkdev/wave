@@ -1,37 +1,73 @@
-<section>
-  <div class="p-8">
-    <h2>Create Floor</h2>
-    <form class="space-y-2" phx-submit="create_floor">
-      <fieldset>
-        <label
-          class="block"
-          for="name">Name</label>
-        <input
-          class="text-gray-800 rounded-sm"
-          type="text"
-          name="name"
-          id="name">
-      </fieldset>
-      <fieldset>
-        <label
-          class="block"
-          for="tables">Number of Tables</label>
-        <input
-          class="text-gray-800 rounded-sm"
-          type="number"
-          name="tables"
-          id="tables">
-      </fieldset>
-      <button
-        class="px-4 py-2 bg-blue-700 rounded-full hover:bg-blue-500"
-      >Create Floor</button>
-    </form>
-  </div>
-</section>
+<div class="flex flex-col mt-2">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="overflow-hidden border-b shadow border-wave-dark bg-wave-darker sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-wave-darkest">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Floor Name
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Amount of Tables
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-200 uppercase">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
 
-
-<section class="mt-8">
-  <div class="p-8">
-    <h2>Traced Conntacts</h2>
+          <%= for floor <- @floors do %>
+          <tr>
+            <td class="px-6 py-4 text-sm font-medium text-gray-100 whitespace-nowrap">
+              <%=
+              floor.name
+              %>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-100 whitespace-nowrap">
+              <%=
+              Enum.count(floor.tables)
+              %>
+            </td>
+            <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+              <button class="px-1 bg-red-600 rounded-full shadow hover:bg-red-800" value="<%= floor.id %>" phx-click="delete">Delete</button>
+            </td>
+          </tr>
+          <% end %>
+          <tr class="bg-wave-darkest">
+          <form phx-submit="create_floor">
+            <td class="px-6 py-4 text-sm font-medium text-gray-100 whitespace-nowrap">
+              <fieldset>
+                <label
+                  class="block"
+                  for="name">Name</label>
+                <input
+                  class="text-gray-800 rounded-sm"
+                  type="text"
+                  name="name"
+                  id="name">
+              </fieldset>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-100 whitespace-nowrap">
+              <fieldset>
+                <label
+                  class="block"
+                  for="tables">Number of Tables</label>
+                <input
+                  class="text-gray-800 rounded-sm"
+                  type="number"
+                  name="tables"
+                  id="tables">
+              </fieldset>
+            </td>
+            <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+              <button class="px-1 bg-green-600 rounded-full shadow hover:bg-green-800">Create</button>
+            </td>
+          </form>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-</section>
+</div>

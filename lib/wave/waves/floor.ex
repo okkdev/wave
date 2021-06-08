@@ -5,7 +5,7 @@ defmodule Wave.Waves.Floor do
 
   schema "floors" do
     field :name, :string
-    has_many :tables, Table
+    has_many :tables, Table, on_delete: :delete_all
 
     timestamps()
   end
