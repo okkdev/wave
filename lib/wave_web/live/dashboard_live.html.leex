@@ -2,10 +2,14 @@
   <div class="text-3xl font-bold">
     ManaWave Dashboard
   </div>
+  <div class="space-x-4">
+    <%= link "Tracing", to: "/dashboard/tracing" %>
+    <%= link "Settings", to: "/dashboard/settings" %>
+  </div>
   <div class="ml-3 text-3xl">
-  <%=
-    naive_to_zurich_time(@current_time)
-  %>
+    <%=
+      naive_to_zurich_time(@current_time)
+    %>
   </div>
 </div>
 

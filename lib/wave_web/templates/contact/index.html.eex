@@ -1,38 +1,38 @@
-<div class="flex flex-col px-4 text-xl text-center" >
-<div class="mb-10 text-3xl font-bold">Contact Tracing</div>
+<div class="flex flex-col max-w-lg px-4 mx-auto text-xl text-center" >
+<div class="my-10 text-3xl font-bold">Contact Tracing</div>
 
 <%= form_for @changeset, Routes.contact_path(@conn, :create),
   fn f -> %>
 
-  <div class="flex justify-between">
-  <%= label f, :firstname %>
-  <%= text_input f, :firstname, class: "text-black rounded-lg px-1" %>
+  <div class="md:flex md:justify-between">
+  <%= label f, :firstname, class: "block text-left" %>
+  <%= text_input f, :firstname, class: "block text-black rounded-lg w-full px-1" %>
   </div>
-  <div class="mb-3">
+  <div class="mb-2">
   <%= error_tag f, :firstname %>
   </div>
 
-  <div class="flex justify-between">
-  <%= label f, :lastname %>
-  <%= text_input f, :lastname, class: "text-black rounded-lg px-1" %>
+  <div class="md:flex md:justify-between">
+  <%= label f, :lastname, class: "block text-left" %>
+  <%= text_input f, :lastname, class: "block text-black rounded-lg w-full px-1" %>
   </div>
-  <div class="mb-3">
+  <div class="mb-2">
   <%= error_tag f, :lastname %>
   </div>
 
-  <div class="flex justify-between">
-  <%= label f, :city %>
-  <%= text_input f, :city, class: "text-black rounded-lg px-1" %>
+  <div class="md:flex md:justify-between">
+  <%= label f, :city, class: "block text-left" %>
+  <%= text_input f, :city, class: "block text-black rounded-lg w-full px-1" %>
   </div>
-  <div class="mb-3">
+  <div class="mb-2">
   <%= error_tag f, :city %>
   </div>
 
-  <div class="flex justify-between">
-  <%= label f, :phone %>
-  <%= text_input f, :phone, class: "text-black rounded-lg px-1" %>
+  <div class="md:flex md:justify-between">
+  <%= label f, :phone, class: "block text-left" %>
+  <%= text_input f, :phone, class: "block text-black rounded-lg w-full px-1" %>
   </div>
-  <div class="mb-3">
+  <div class="mb-2">
   <%= error_tag f, :phone %>
   </div>
 
