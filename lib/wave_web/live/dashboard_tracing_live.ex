@@ -7,7 +7,6 @@ defmodule WaveWeb.DashboardTracingLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       Pubsub.subscribe()
-      :timer.send_interval(1000, self(), :tick)
     end
 
     {:ok, fetch(socket)}

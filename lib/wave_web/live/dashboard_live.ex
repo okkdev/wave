@@ -7,7 +7,7 @@ defmodule WaveWeb.DashboardLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       Pubsub.subscribe()
-      :timer.send_interval(1000, self(), :tick)
+      schedule_tick()
     end
 
     socket =
@@ -31,6 +31,7 @@ defmodule WaveWeb.DashboardLive do
 
   @impl true
   def handle_info(:tick, socket) do
+    schedule_tick()
     {:noreply, put_time(socket)}
   end
 
@@ -56,8 +57,12 @@ defmodule WaveWeb.DashboardLive do
     assign(socket, current_time: NaiveDateTime.utc_now())
   end
 
+  defp schedule_tick do
+    Process.send_after(self(), :tick, 1000)
+  end
+
   defp flashbang(socket) do
-    :timer.send_after(300, self(), :remove_flashbang)
+    Process.send_after(self(), :remove_flashbang, 300)
     assign(socket, flashbang: true)
   end
 

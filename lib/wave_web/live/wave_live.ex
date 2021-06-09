@@ -27,7 +27,7 @@ defmodule WaveWeb.WaveLive do
     Waves.activate_table(socket.assigns.table.id)
 
     Pubsub.broadcast(:wave)
-    :timer.send_after(300, self(), :waveani)
+    Process.send_after(self(), :waveani, 300)
 
     socket =
       socket
