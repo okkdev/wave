@@ -15,9 +15,9 @@
     <%= link "Tracing", to: "/dashboard/tracing" %>
     <%= link "Settings", to: "/dashboard/settings" %>
   </div>
-  <div class="ml-3 text-3xl">
+  <div class="w-20 ml-3 text-3xl">
     <%=
-      naive_to_zurich_time(@current_time)
+      to_time(@current_time)
     %>
   </div>
 </div>
@@ -30,12 +30,12 @@
       <div class="flex flex-col items-center justify-center text-2xl">
         <div>
           <%=
-          NaiveDateTime.diff(table.updated_at, @current_time)
+          DateTime.diff(table.updated_at, @current_time)
           %>s
         </div>
         <div class="font-medium">
           <%=
-          naive_to_zurich_time(table.updated_at)
+          to_time(table.updated_at)
           %>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <div class="flex flex-col items-center justify-center text-2xl">
         <div class="font-medium">
           <%=
-          naive_to_zurich_time(table.updated_at)
+          to_time(table.updated_at)
           %>
         </div>
       </div>

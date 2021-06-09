@@ -8,7 +8,7 @@ defmodule Wave.Waves.Table do
     field :number, :integer
     belongs_to :floor, Floor
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

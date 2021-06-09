@@ -8,7 +8,7 @@ defmodule Wave.Tracing.Contact do
     field :lastname, :string
     field :phone, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

@@ -54,7 +54,7 @@ defmodule WaveWeb.DashboardLive do
   end
 
   defp put_time(socket) do
-    assign(socket, current_time: NaiveDateTime.utc_now())
+    assign(socket, current_time: DateTime.utc_now())
   end
 
   defp schedule_tick do
@@ -73,11 +73,10 @@ defmodule WaveWeb.DashboardLive do
     )
   end
 
-  # Improve this shit
-  defp naive_to_zurich_time(naive_time) do
-    naive_time
-    |> DateTime.from_naive!("Etc/UTC")
-    |> DateTime.shift_zone!("Europe/Zurich")
+  # TODO: env var for timezone
+  defp to_time(time) do
+    time
+    |> DateTime.shift_zone!(Application.get_env(:wave, :timezone))
     |> DateTime.truncate(:second)
     |> DateTime.to_time()
   end

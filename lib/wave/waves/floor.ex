@@ -7,7 +7,7 @@ defmodule Wave.Waves.Floor do
     field :name, :string
     has_many :tables, Table, on_delete: :delete_all
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

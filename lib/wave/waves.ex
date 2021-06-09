@@ -160,6 +160,7 @@ defmodule Wave.Waves do
   def list_inactive_tables do
     Table
     |> where(active: false)
+    |> order_by(desc: :updated_at)
     |> Repo.all()
     |> Repo.preload(:floor)
   end
