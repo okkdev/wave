@@ -2,7 +2,7 @@
 # from environment variables. You can also hardcode secrets,
 # although such is generally not recommended and you have to
 # remember to add this file to your .gitignore.
-use Mix.Config
+import Config
 
 database_url =
   System.get_env("DATABASE_URL") ||
@@ -10,6 +10,15 @@ database_url =
     environment variable DATABASE_URL is missing.
     For example: ecto://USER:PASS@HOST/DATABASE
     """
+
+config :wave,
+  dashboard_password:
+    System.get_env("DASHBOARD_PASSWORD") ||
+      raise("""
+      environment variable DASHBOARD_PASSWORD is missing.
+      For example: password xDDDD
+      """),
+  timezone: System.get_env("TIMEZONE") || "Europe/Zurich"
 
 config :wave, Wave.Repo,
   # ssl: true,
