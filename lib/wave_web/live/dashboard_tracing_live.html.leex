@@ -1,0 +1,69 @@
+<div class="flex flex-col mt-2">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="overflow-hidden border-b shadow border-wave-dark bg-wave-darker sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-wave-darkest">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Lastname
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Firstname
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                City
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Phone
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-200 uppercase">
+                Created
+              </th>
+              <th scope="col" class="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-200 uppercase">
+                Total Traced: <%= Enum.count(@contacts) %>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+          <%= for contact <- @contacts do %>
+            <tr>
+              <td class="px-6 py-4 text-sm font-medium text-gray-100 whitespace-nowrap">
+                <%=
+                contact.lastname
+                %>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-100 whitespace-nowrap">
+                <%=
+                contact.firstname
+                %>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-200 whitespace-nowrap">
+                <%=
+                contact.phone
+                %>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-200 whitespace-nowrap">
+                <%=
+                contact.city
+                %>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-200 whitespace-nowrap">
+                <%=
+                contact.inserted_at
+                |> DateTime.shift_zone!(Application.get_env(:wave, :timezone))
+                |> DateTime.to_naive()
+                %>
+              </td>
+              <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                <button class="px-1 bg-red-600 rounded-full shadow hover:bg-red-800" value="<%= contact.id %>" phx-click="delete">Delete</button>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="flex flex-col items-center h-full">
+  <div class="w-2/3 mt-16 mb-16 md:w-1/3">
+    <img src="<%= Routes.static_path(@socket, "/images/manawave-logo.png") %>">
+  </div>
+
+  <div class="text-2xl font-xl">
+  Tisch <%=
+    "#{@table.floor.name} #{@table.number}"
+    %>
+  </div>
+  <button class="my-4 flex-shrink-0 text-6xl pt-10 pb-8 px-12 rounded-lg transition delay-100 duration-200 <%= if @disabled, do: "bg-green-500 cursor-default", else: "delay-1000 bg-wave-blue" %>" phx-click="wave" <%= if @disabled, do: "disabled" %>>
+    <div class="transition pointer-events-none ease-in-out duration-100 origin-center transform <%= if @waveani, do: "rotate-45" %>">👋</div>
+  </button>
+  <div class="text-xl font-xl">Wave um ManaBar Crew zu rufen</div>
+</div>

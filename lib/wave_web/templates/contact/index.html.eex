@@ -1,0 +1,41 @@
+<div class="flex flex-col max-w-lg px-4 mx-auto text-xl text-center" >
+<div class="my-10 text-3xl font-bold">Contact Tracing</div>
+
+<%= form_for @changeset, Routes.contact_path(@conn, :create),
+  fn f -> %>
+
+  <div>
+  <%= label f, :firstname, class: "block text-left" %>
+  <%= text_input f, :firstname, class: "block text-black rounded-lg w-full px-1" %>
+  </div>
+  <div class="mb-2">
+  <%= error_tag f, :firstname %>
+  </div>
+
+  <div>
+  <%= label f, :lastname, class: "block text-left" %>
+  <%= text_input f, :lastname, class: "block text-black rounded-lg w-full px-1" %>
+  </div>
+  <div class="mb-2">
+  <%= error_tag f, :lastname %>
+  </div>
+
+  <div>
+  <%= label f, :city, class: "block text-left" %>
+  <%= text_input f, :city, class: "block text-black rounded-lg w-full px-1" %>
+  </div>
+  <div class="mb-2">
+  <%= error_tag f, :city %>
+  </div>
+
+  <div>
+  <%= label f, :phone, class: "block text-left" %>
+  <%= text_input f, :phone, class: "block text-black rounded-lg w-full px-1" %>
+  </div>
+  <div class="mb-2">
+  <%= error_tag f, :phone %>
+  </div>
+
+  <%= submit "Submit", phx_disable_with: "Submitting...", class: "disabled:bg-wave-gray py-3 bg-wave-blue text-white rounded-full mt-5 w-full" %>
+<% end %>
+</div>

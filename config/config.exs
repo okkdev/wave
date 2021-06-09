@@ -7,13 +7,16 @@
 # General application configuration
 use Mix.Config
 
+config :wave,
+  ecto_repos: [Wave.Repo]
+
 # Configures the endpoint
-config :manawave, ManawaveWeb.Endpoint,
+config :wave, WaveWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "5Ga46tgwI2NJrk82+aU5jvqMrerIttB21ruR/I+mBN6oys1T5dyOeKWlvrFqDEBt",
-  render_errors: [view: ManawaveWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Manawave.PubSub,
-  live_view: [signing_salt: "klTnqVEP"]
+  secret_key_base: "f8GGNJl4YBGhlzgk3N3ZwD5DgehZgKCt2kjpbhGK87ywdTru6GWG9euFotBNTkfR",
+  render_errors: [view: WaveWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Wave.PubSub,
+  live_view: [signing_salt: "hmhsZHh7"]
 
 # Configures Elixir's Logger
 config :logger, :console,

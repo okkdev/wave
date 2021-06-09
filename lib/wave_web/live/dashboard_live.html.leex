@@ -1,0 +1,76 @@
+<%= if @flashbang do %>
+<style>
+  html {
+    background: white;
+    filter: invert(1);
+  }
+</style>
+<% end %>
+
+<div class="flex flex-row items-center justify-between mb-5">
+  <div class="text-3xl font-bold">
+    ManaWave Dashboard
+  </div>
+  <div class="space-x-4">
+    <%= link "Tracing", to: "/dashboard/tracing" %>
+    <%= link "Settings", to: "/dashboard/settings" %>
+  </div>
+  <div class="w-20 ml-3 text-3xl">
+    <%=
+      to_time(@current_time)
+    %>
+  </div>
+</div>
+
+<div class="flex flex-row justify-around">
+<div class="flex flex-col w-2/5">
+  <div class="mb-3 text-3xl font-bold text-center">Feed</div>
+  <%= for table <- @tables do %>
+    <button id="table_<%= table.id %>" phx-value-id="<%= table.id %>" phx-click="acknowledge" phx-hook="Ding" class="flex flex-row justify-around p-4 m-2 text-lg text-center text-white rounded-full cursor-pointer bg-wave-blue">
+      <div class="flex flex-col items-center justify-center text-2xl">
+        <div>
+          <%=
+          DateTime.diff(table.updated_at, @current_time)
+          %>s
+        </div>
+        <div class="font-medium">
+          <%=
+          to_time(table.updated_at)
+          %>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-center">
+        <div class="text-xl font-medium">
+          Table
+          <%=
+          "#{table.floor.name} #{table.number}"
+          %>
+        </div>
+      </div>
+    </button>
+  <% end %>
+</div>
+<div class="flex flex-col w-2/5">
+  <div class="mb-3 text-3xl font-bold text-center">Acknowledged</div>
+  <%= for table <- @ack do %>
+    <div id="table_<%= table.id %>" class="flex flex-row justify-around p-4 m-2 text-lg text-center text-green-600 border-2 border-green-600 rounded-full opacity-50">
+      <div class="flex flex-col items-center justify-center text-2xl">
+        <div class="font-medium">
+          <%=
+          to_time(table.updated_at)
+          %>
+        </div>
+      </div>
+      <div class="flex flex-col items-center justify-center">
+        <div class="text-xl font-medium">
+          Table
+          <%=
+          "#{table.floor.name} #{table.number}"
+          %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+</div>
+</div>

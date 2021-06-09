@@ -1,4 +1,4 @@
-defmodule ManawaveWeb.ConnCase do
+defmodule WaveWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule ManawaveWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use ManawaveWeb.ConnCase, async: true`, although
+  by setting `use WaveWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,16 +22,22 @@ defmodule ManawaveWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import ManawaveWeb.ConnCase
+      import WaveWeb.ConnCase
 
-      alias ManawaveWeb.Router.Helpers, as: Routes
+      alias WaveWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint ManawaveWeb.Endpoint
+      @endpoint WaveWeb.Endpoint
     end
   end
 
-  setup _tags do
+  setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Wave.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Wave.Repo, {:shared, self()})
+    end
+
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
