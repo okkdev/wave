@@ -10,17 +10,33 @@ defmodule WaveWeb.DashboardLive do
       :timer.send_interval(1000, self(), :tick)
     end
 
-    {:ok, fetch(put_time(socket))}
+    socket =
+      socket
+      |> put_time()
+      |> assign(flashbang: false)
+      |> fetch()
+
+    {:ok, socket}
   end
 
   @impl true
   def handle_info(:wave, socket) do
-    {:noreply, fetch(socket)}
+    socket =
+      socket
+      |> flashbang()
+      |> fetch()
+
+    {:noreply, socket}
   end
 
   @impl true
   def handle_info(:tick, socket) do
     {:noreply, put_time(socket)}
+  end
+
+  @impl true
+  def handle_info(:remove_flashbang, socket) do
+    {:noreply, assign(socket, flashbang: false)}
   end
 
   @impl true
@@ -38,6 +54,11 @@ defmodule WaveWeb.DashboardLive do
 
   defp put_time(socket) do
     assign(socket, current_time: NaiveDateTime.utc_now())
+  end
+
+  defp flashbang(socket) do
+    :timer.send_after(300, self(), :remove_flashbang)
+    assign(socket, flashbang: true)
   end
 
   defp fetch(socket) do

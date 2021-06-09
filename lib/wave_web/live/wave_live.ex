@@ -27,7 +27,7 @@ defmodule WaveWeb.WaveLive do
     Waves.activate_table(socket.assigns.table.id)
 
     Pubsub.broadcast(:wave)
-    :timer.send_after(300, self(), {:waveani})
+    :timer.send_after(300, self(), :waveani)
 
     socket =
       socket
@@ -52,7 +52,7 @@ defmodule WaveWeb.WaveLive do
   end
 
   @impl true
-  def handle_info({:waveani}, socket) do
+  def handle_info(:waveani, socket) do
     {:noreply, assign(socket, waveani: false)}
   end
 
