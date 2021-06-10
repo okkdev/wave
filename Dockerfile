@@ -1,57 +1,68 @@
-ARG ALPINE_VERSION=3.12.0
+FROM hexpm/elixir:1.11.0-erlang-23.1.1-alpine-3.12.0 as build
 
-FROM hexpm/elixir:1.11.0-erlang-23.1.1-alpine-3.12.0 as builder
+# install build dependencies
+RUN apk add --no-cache build-base npm
 
-# Replace `your_app` with your otp application name.
-ENV APP_NAME=wave \
-  MIX_ENV=prod
+# prepare build dir
+WORKDIR /app
 
-WORKDIR /opt/app
+# install hex + rebar
+RUN mix local.hex --force && \
+  mix local.rebar --force
 
-# Add required packages for building the application.
-# If you're not running Phoenix LiveView
-# remove the `nodejs` and `npm` lines.
-RUN apk update && \
-  apk upgrade --no-cache && \
-  apk add --no-cache git \
-  nodejs \
-  npm --update \
-  build-base && \
-  mix local.rebar --force && \
-  mix local.hex --force
+# set build ENV as prod
+ENV MIX_ENV=prod
 
+# Copy over the mix.exs and mix.lock files to load the dependencies. If those
+# files don't change, then we don't keep re-fetching and rebuilding the deps.
 COPY mix.exs mix.lock ./
+COPY config config
 
-RUN mix do deps.get, deps.compile
+RUN mix deps.get --only prod && \
+  mix deps.compile
 
-# If you're not running Phoenix LiveView
-# remove these next two instructions.
-COPY ./assets ./assets
+# install npm dependencies
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN npm --prefix ./assets ci --progress=false --no-audit --loglevel=error
 
-RUN cd assets && npm install
+COPY priv priv
+COPY assets assets
 
-COPY . .
+# NOTE: If using TailwindCSS, it uses a special "purge" step and that requires
+# the code in `lib` to see what is being used. Uncomment that here before
+# running the npm deploy script if that's the case.
+COPY lib lib
 
-# Remove `phx.digest` if you're not using LiveView
-RUN mix do compile, phx.digest, release
+# build assets
+RUN npm run --prefix ./assets deploy
+RUN mix phx.digest
 
-# Final build stage.
-FROM alpine:${ALPINE_VERSION}
+# copy source here if not using TailwindCSS
+# COPY lib lib
 
-RUN apk update && \
-  apk add --no-cache bash
+# compile and build release
+RUN mix do compile, release
 
-WORKDIR /opt/app
+###
+### Second Stage - Setup the Runtime Environment
+###
 
-RUN addgroup -S app
-RUN adduser -S app -G app
+# prepare release docker image
+FROM alpine:3.13.3 AS app
+RUN apk add --no-cache libstdc++ openssl ncurses-libs
 
-COPY --from=builder /opt/app/_build/prod/rel .
-RUN chown -R app:app /opt/app
-USER app
+WORKDIR /app
 
-# Run the pending migrations for your application then start it.
-# Replace `your_app` and `YourApp` with the otp app name and module respectively.
-CMD trap 'exit' INT; \
-  ./wave/bin/wave eval "Wave.Release.migrate" && \
-  ./wave/bin/wave start
+RUN chown nobody:nobody /app
+
+USER nobody:nobody
+
+COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/wave ./
+COPY --chown=nobody:nobody entrypoint.sh ./
+
+ENV HOME=/app
+ENV MIX_ENV=prod
+ENV PORT=4000
+
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["bin/wave", "start"]
