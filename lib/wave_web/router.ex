@@ -17,9 +17,7 @@ defmodule WaveWeb.Router do
   end
 
   pipeline :protected do
-    plug :basic_auth,
-      username: "admin",
-      password: Application.fetch_env(:wave, :dashboard_password)
+    plug :auth
   end
 
   pipeline :traced do
@@ -47,5 +45,10 @@ defmodule WaveWeb.Router do
 
     live "/", PageLive, :index
     live "/table/:table_id", WaveLive
+  end
+
+  defp auth(conn, opts) do
+    password = Application.fetch_env(:wave, :dashboard_password)
+    Plug.BasicAuth.basic_auth(conn, username: "admin", password: password)
   end
 end
