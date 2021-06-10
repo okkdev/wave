@@ -1,0 +1,5 @@
+assets/node_modules
+_build
+deps
+test
+package-lock.json
