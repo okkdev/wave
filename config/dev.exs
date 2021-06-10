@@ -1,9 +1,5 @@
 use Mix.Config
 
-config :wave,
-  dashboard_password: "admin",
-  timezone: "Europe/Zurich"
-
 # Configure your database
 config :wave, Wave.Repo,
   username: "postgres",

@@ -48,7 +48,7 @@ defmodule WaveWeb.Router do
   end
 
   defp auth(conn, opts) do
-    password = Application.fetch_env(:wave, :dashboard_password)
+    password = Application.fetch_env!(:wave, :dashboard_password)
     Plug.BasicAuth.basic_auth(conn, username: "admin", password: password)
   end
 end

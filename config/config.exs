@@ -8,7 +8,9 @@
 use Mix.Config
 
 config :wave,
-  ecto_repos: [Wave.Repo]
+  ecto_repos: [Wave.Repo],
+  dashboard_password: "admin",
+  timezone: "Europe/Zurich"
 
 # Configures the endpoint
 config :wave, WaveWeb.Endpoint,
