@@ -52,7 +52,7 @@
               <td class="px-6 py-4 text-sm text-gray-200 whitespace-nowrap">
                 <%=
                 contact.inserted_at
-                |> DateTime.shift_zone!(Application.get_env(:wave, :timezone))
+                |> DateTime.shift_zone!(Application.fetch_env!(:wave, :timezone))
                 |> DateTime.to_naive()
                 %>
               </td>

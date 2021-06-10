@@ -19,7 +19,7 @@ defmodule WaveWeb.Router do
   pipeline :protected do
     plug :basic_auth,
       username: "admin",
-      password: Application.get_env(:wave, :dashboard_password)
+      password: Application.fetch_env!(:wave, :dashboard_password)
   end
 
   pipeline :traced do

@@ -76,7 +76,7 @@ defmodule WaveWeb.DashboardLive do
   # TODO: env var for timezone
   defp to_time(time) do
     time
-    |> DateTime.shift_zone!(Application.get_env(:wave, :timezone))
+    |> DateTime.shift_zone!(Application.fetch_env!(:wave, :timezone))
     |> DateTime.truncate(:second)
     |> DateTime.to_time()
   end
