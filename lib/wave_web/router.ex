@@ -41,7 +41,7 @@ defmodule WaveWeb.Router do
   end
 
   scope "/", WaveWeb do
-    pipe_through [:browser, :traced]
+    pipe_through [:browser]
 
     live "/", PageLive, :index
     live "/table/:table_id", WaveLive
